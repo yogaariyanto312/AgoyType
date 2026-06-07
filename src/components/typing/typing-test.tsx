@@ -242,27 +242,24 @@ export function TypingTest() {
   const blinkCaret = status !== "running";
 
   return (
-    <div className="flex w-full flex-col items-center gap-8">
-      <div
-        className={cn(
-          "transition-opacity duration-200",
-          status === "running" ? "pointer-events-none opacity-0" : "opacity-100",
-        )}
-      >
-        {showConfigBar && <ConfigBar />}
-      </div>
-
+    <div className="flex w-full flex-col items-center gap-4">
       {status === "finished" ? (
-        <ResultScreen
-          onNext={restart}
-          onRepeat={repeatTest}
-          saveStatus={saveStatus}
-          isPersonalBest={isPersonalBest}
-          newAchievements={newAchievements}
-        />
+        /* ── result card ─────────────────────────────────────────── */
+        <div className="w-full max-w-4xl">
+          <div className="liquid-glass px-8 py-8">
+            <ResultScreen
+              onNext={restart}
+              onRepeat={repeatTest}
+              saveStatus={saveStatus}
+              isPersonalBest={isPersonalBest}
+              newAchievements={newAchievements}
+            />
+          </div>
+        </div>
       ) : (
-        <div className="w-full max-w-5xl">
-          <div className="mb-3 flex items-center justify-between">
+        <div className="w-full max-w-5xl space-y-3">
+          {/* live stats row — sits above the card */}
+          <div className="flex min-h-7 items-center justify-between px-1">
             <LiveStats />
             {isZen && status === "running" && (
               <Button size="sm" variant="secondary" onClick={finish}>
@@ -271,44 +268,67 @@ export function TypingTest() {
             )}
           </div>
 
-          <div
-            ref={containerRef}
-            tabIndex={0}
-            role="textbox"
-            aria-label="Typing test input area"
-            onKeyDown={onKeyDown}
-            onFocus={() => setFocused(true)}
-            onBlur={() => setFocused(false)}
-            onClick={focusTest}
-            className="relative cursor-text rounded-lg p-4 outline-none"
-          >
+          {/* ── liquid glass card ────────────────────────────────── */}
+          <div className="liquid-glass">
+            {/* config bar — collapses smoothly when the test starts */}
             <div
               className={cn(
-                "transition-[filter] duration-200",
-                !focused && "pointer-events-none blur-[5px]",
+                "relative z-[1] overflow-hidden transition-all duration-300 ease-in-out",
+                showConfigBar
+                  ? "max-h-40 border-b border-foreground/[0.07] opacity-100"
+                  : "pointer-events-none max-h-0 opacity-0",
               )}
             >
-              <TypingWords
-                words={words}
-                inputs={inputs}
-                wordIndex={wordIndex}
-                isZen={isZen}
-                smoothCaret={smoothCaret}
-                blink={blinkCaret}
-              />
+              <div className="px-6 pt-2 pb-3">
+                <ConfigBar />
+              </div>
             </div>
 
-            {!focused && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Lock className="h-4 w-4" /> click or press any key to focus
-                </span>
+            {/* typing area */}
+            <div
+              ref={containerRef}
+              tabIndex={0}
+              role="textbox"
+              aria-label="Typing test input area"
+              onKeyDown={onKeyDown}
+              onFocus={() => setFocused(true)}
+              onBlur={() => setFocused(false)}
+              onClick={focusTest}
+              className="relative z-[1] cursor-text px-8 py-8 outline-none"
+            >
+              <div
+                className={cn(
+                  "transition-[filter] duration-200",
+                  !focused && "pointer-events-none blur-[5px]",
+                )}
+              >
+                <TypingWords
+                  words={words}
+                  inputs={inputs}
+                  wordIndex={wordIndex}
+                  isZen={isZen}
+                  smoothCaret={smoothCaret}
+                  blink={blinkCaret}
+                />
               </div>
-            )}
-          </div>
 
-          <div className="mt-8 flex items-center justify-center gap-4 text-xs text-muted-foreground">
-            <button onClick={restart} className="flex items-center gap-1.5 hover:text-foreground">
+              {!focused && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Lock className="h-4 w-4" /> click or press any key to focus
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+          {/* ── end liquid glass card ────────────────────────────── */}
+
+          {/* restart hint */}
+          <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
+            <button
+              onClick={restart}
+              className="flex items-center gap-1.5 hover:text-foreground"
+            >
               <RotateCcw className="h-3.5 w-3.5" /> restart
             </button>
             <span className="rounded bg-secondary px-1.5 py-0.5 font-mono">tab</span>

@@ -14,29 +14,24 @@ interface ResultScreenProps {
   newAchievements: string[];
 }
 
-function Stat({
+function StatPill({
   label,
   value,
   sub,
-  big,
 }: {
   label: string;
   value: string | number;
   sub?: string;
-  big?: boolean;
 }) {
   return (
-    <div className="flex flex-col">
-      <span className="text-sm text-muted-foreground">{label}</span>
-      <span
-        className={cn(
-          "font-mono font-semibold leading-none text-tt-main",
-          big ? "text-6xl" : "text-3xl",
-        )}
-      >
+    <div className="flex flex-col items-center gap-0.5 rounded-xl bg-foreground/[0.04] px-4 py-3 ring-1 ring-foreground/[0.06]">
+      <span className="font-mono text-xl font-semibold tabular-nums text-tt-main">
         {value}
       </span>
-      {sub && <span className="mt-1 text-xs text-muted-foreground">{sub}</span>}
+      <span className="text-xs text-muted-foreground">{label}</span>
+      {sub && (
+        <span className="text-[10px] text-muted-foreground/60">{sub}</span>
+      )}
     </div>
   );
 }
@@ -58,76 +53,123 @@ export function ResultScreen({
   const { charStats } = result;
 
   return (
-    <div className="mx-auto w-full max-w-4xl animate-fade-in">
-      {isPersonalBest && (
-        <div className="mb-4 flex items-center justify-center gap-2 rounded-lg bg-tt-main/10 py-2 text-tt-main">
-          <Crown className="h-5 w-5" />
-          <span className="font-semibold">New personal best!</span>
-        </div>
-      )}
+    <div className="animate-fade-in space-y-6">
+      {/* ── Header row: mode tag + PB badge ── */}
+      <div className="flex items-center justify-between">
+        <span className="rounded-full bg-foreground/[0.06] px-3 py-1 font-mono text-sm text-muted-foreground ring-1 ring-foreground/[0.07]">
+          {mode2}
+          {language !== "english" && (
+            <span className="ml-1.5 opacity-60">{language}</span>
+          )}
+        </span>
+        {isPersonalBest && (
+          <span className="flex items-center gap-1.5 rounded-full bg-tt-main/15 px-3 py-1 text-sm font-semibold text-tt-main ring-1 ring-tt-main/25">
+            <Crown className="h-3.5 w-3.5" /> personal best
+          </span>
+        )}
+      </div>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-[200px_1fr]">
-        <div className="flex flex-row justify-around md:flex-col md:justify-start md:gap-6">
-          <Stat label="wpm" value={Math.round(result.wpm)} big />
-          <Stat label="accuracy" value={`${Math.round(result.accuracy)}%`} big />
+      {/* ── Hero metrics: WPM centered, accuracy secondary ── */}
+      <div className="flex items-end justify-center gap-10 py-2">
+        <div className="text-center">
+          <div className="font-mono text-[5.5rem] font-bold leading-none tabular-nums text-tt-main">
+            {Math.round(result.wpm)}
+          </div>
+          <div className="mt-2 text-sm font-medium uppercase tracking-widest text-muted-foreground">
+            wpm
+          </div>
         </div>
-
-        <div className="flex flex-col justify-center">
-          <ResultChart rawData={rawData} />
+        <div className="mb-3 text-center">
+          <div className="font-mono text-5xl font-bold leading-none tabular-nums text-tt-main/75">
+            {Math.round(result.accuracy)}
+            <span className="text-3xl">%</span>
+          </div>
+          <div className="mt-2 text-xs font-medium uppercase tracking-widest text-muted-foreground">
+            accuracy
+          </div>
         </div>
       </div>
 
-      <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-4 lg:grid-cols-6">
-        <Stat label="test type" value={mode2} sub={language} />
-        <Stat label="raw" value={Math.round(result.rawWpm)} />
-        <Stat label="consistency" value={`${Math.round(result.consistency)}%`} />
-        <Stat
-          label="characters"
-          value={`${charStats.correct}/${charStats.incorrect}/${charStats.extra}/${charStats.missed}`}
-          sub="correct/incorrect/extra/missed"
+      {/* ── Chart ── */}
+      <div className="rounded-xl bg-foreground/[0.03] p-4 ring-1 ring-foreground/[0.06]">
+        <ResultChart rawData={rawData} />
+      </div>
+
+      {/* ── Stat pills grid ── */}
+      <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
+        <StatPill label="raw" value={Math.round(result.rawWpm)} />
+        <StatPill
+          label="consistency"
+          value={`${Math.round(result.consistency)}%`}
         />
-        <Stat label="time" value={`${Math.round(result.durationSeconds)}s`} />
-        <Stat label="keystrokes" value={result.keystrokes} />
+        <StatPill
+          label="chars"
+          value={`${charStats.correct}/${charStats.incorrect}`}
+          sub="correct / wrong"
+        />
+        <StatPill
+          label="time"
+          value={`${Math.round(result.durationSeconds)}s`}
+        />
+        <StatPill label="keystrokes" value={result.keystrokes} />
+        <StatPill
+          label="extra / missed"
+          value={`${charStats.extra}/${charStats.missed}`}
+        />
       </div>
 
       {quoteSource && (
-        <p className="mt-4 text-center text-sm text-muted-foreground">
+        <p className="text-center text-sm italic text-muted-foreground/70">
           — {quoteSource}
         </p>
       )}
 
+      {/* ── Achievement badges ── */}
       {newAchievements.length > 0 && (
-        <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+        <div className="flex flex-wrap items-center justify-center gap-2">
           {newAchievements.map((a) => (
             <span
               key={a}
-              className="flex items-center gap-1 rounded-full bg-secondary px-3 py-1 text-xs"
+              className="flex items-center gap-1 rounded-full bg-tt-main/10 px-3 py-1 text-xs font-medium text-tt-main ring-1 ring-tt-main/20"
             >
-              <Trophy className="h-3 w-3 text-tt-main" /> {a}
+              <Trophy className="h-3 w-3" /> {a}
             </span>
           ))}
         </div>
       )}
 
-      <div className="mt-8 flex items-center justify-center gap-3">
-        <Button variant="ghost" size="icon" onClick={onRepeat} title="Repeat test">
-          <RotateCcw className="h-5 w-5" />
+      {/* ── Actions ── */}
+      <div className="flex items-center justify-between border-t border-foreground/[0.06] pt-4">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onRepeat}
+          title="Repeat same test"
+          className="rounded-full"
+        >
+          <RotateCcw className="h-4 w-4" />
         </Button>
-        <Button onClick={onNext} className="gap-2">
-          Next test <ArrowRight className="h-4 w-4" />
-        </Button>
-        <div className="ml-2 text-xs text-muted-foreground">
+
+        <div className="text-xs text-muted-foreground">
           {saveStatus === "saving" && (
-            <span className="flex items-center gap-1">
+            <span className="flex items-center gap-1.5">
               <Loader2 className="h-3 w-3 animate-spin" /> saving…
             </span>
           )}
-          {saveStatus === "saved" && <span>saved ✓</span>}
-          {saveStatus === "guest" && <span>log in to save results</span>}
+          {saveStatus === "saved" && (
+            <span className="text-tt-main/70">saved ✓</span>
+          )}
+          {saveStatus === "guest" && (
+            <span>log in to save results</span>
+          )}
           {saveStatus === "error" && (
             <span className="text-destructive">save failed</span>
           )}
         </div>
+
+        <Button onClick={onNext} className={cn("gap-2 rounded-full")}>
+          Next test <ArrowRight className="h-4 w-4" />
+        </Button>
       </div>
     </div>
   );

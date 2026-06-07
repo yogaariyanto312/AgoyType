@@ -114,3 +114,48 @@
   max-height: 10.5rem;
   overflow: hidden;
 }
+
+/* ── Apple liquid-glass card ───────────────────────────────────────────────
+   Semi-transparent background + strong backdrop blur + layered highlights
+   recreate the glass-like depth introduced in iOS 26 / macOS Tahoe.
+   ──────────────────────────────────────────────────────────────────────── */
+.liquid-glass {
+  position: relative;
+  /* gradient so the card is slightly lighter at the top — catches ambient light */
+  background: linear-gradient(
+    160deg,
+    hsl(var(--background) / 0.62) 0%,
+    hsl(var(--background) / 0.44) 100%
+  );
+  backdrop-filter: blur(28px) saturate(1.8) brightness(1.04);
+  -webkit-backdrop-filter: blur(28px) saturate(1.8) brightness(1.04);
+  border-radius: 20px;
+  border: 1px solid hsl(var(--foreground) / 0.09);
+  box-shadow:
+    /* top-rim inner highlight — the glass edge catching ambient light */
+    inset 0 1.5px 0 hsl(var(--foreground) / 0.18),
+    /* subtle all-over inner micro-glow */
+    inset 0 0 0 0.5px hsl(var(--foreground) / 0.05),
+    /* layered outer depth shadows */
+    0 4px 16px hsl(0 0% 0% / 0.22),
+    0 16px 48px hsl(0 0% 0% / 0.28),
+    /* faint accent-colour halo that ties the card to the active theme */
+    0 0 80px hsl(var(--tt-main) / 0.07);
+  overflow: hidden;
+}
+
+/* specular caustic sheen — simulates light bending through the glass */
+.liquid-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    130deg,
+    hsl(var(--foreground) / 0.07) 0%,
+    transparent 42%,
+    hsl(var(--foreground) / 0.025) 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}

@@ -2,8 +2,9 @@
 
 import { useTypingStore } from "@/store/typing-store";
 import { useConfigStore } from "@/store/config-store";
+import { cn } from "@/lib/utils";
 
-/** Compact live readout shown above the words while a test is running. */
+/** Live readout shown above the typing card during a test. */
 export function LiveStats() {
   const status = useTypingStore((s) => s.status);
   const mode = useTypingStore((s) => s.mode);
@@ -26,13 +27,25 @@ export function LiveStats() {
     primary = `${Math.floor(elapsed)}s`;
   }
 
+  const visible = running || mode === "zen";
+
   return (
-    <div className="flex h-8 items-center gap-4 font-mono text-2xl text-tt-main">
-      <span className={running || mode === "zen" ? "opacity-100" : "opacity-0"}>
+    <div className="flex items-center gap-2">
+      {/* Primary counter — pill badge */}
+      <div
+        className={cn(
+          "rounded-full bg-tt-main/10 px-3 py-1 font-mono text-xl font-bold tabular-nums text-tt-main ring-1 ring-tt-main/20 transition-opacity duration-200",
+          visible ? "opacity-100" : "opacity-0",
+        )}
+      >
         {primary}
-      </span>
+      </div>
+
+      {/* Live WPM — secondary pill */}
       {!hideLiveWpm && running && (
-        <span className="text-xl text-muted-foreground">{liveWpm} wpm</span>
+        <div className="rounded-full bg-foreground/[0.06] px-2.5 py-1 font-mono text-sm tabular-nums text-muted-foreground ring-1 ring-foreground/[0.08]">
+          {liveWpm} wpm
+        </div>
       )}
     </div>
   );

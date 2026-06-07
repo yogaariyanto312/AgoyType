@@ -18,44 +18,46 @@ export function Navbar() {
   const pathname = usePathname();
 
   return (
-    <header className="w-full">
-      <nav className="container flex h-16 items-center justify-between gap-4">
-        <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-md bg-tt-main text-background">
-              <Keyboard className="h-5 w-5" />
-            </span>
-            <span className="text-lg font-bold tracking-tight">
-              Agoy<span className="text-tt-main">Type</span>
-            </span>
-          </Link>
-          <div className="hidden items-center gap-1 sm:flex">
-            {links.map((link) => {
-              const Icon = link.icon;
-              const active =
-                link.href === "/"
-                  ? pathname === "/"
-                  : pathname.startsWith(link.href);
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={cn(
-                    "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
-                    active
-                      ? "text-tt-main"
-                      : "text-muted-foreground hover:text-foreground",
-                  )}
-                >
-                  <Icon className="h-4 w-4" />
-                  {link.label}
-                </Link>
-              );
-            })}
-          </div>
+    <header className="sticky top-0 z-40 w-full border-b border-foreground/[0.06] bg-background/80 backdrop-blur-2xl">
+      <nav className="container flex h-14 items-center justify-between gap-4">
+        {/* Brand */}
+        <Link href="/" className="flex shrink-0 items-center gap-2">
+          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-tt-main/20 text-tt-main ring-1 ring-tt-main/30">
+            <Keyboard className="h-4 w-4" />
+          </span>
+          <span className="font-bold tracking-tight">
+            Agoy<span className="text-tt-main">Type</span>
+          </span>
+        </Link>
+
+        {/* Center pill navigation — distinctly non-Monkeytype */}
+        <div className="hidden items-center rounded-full border border-foreground/[0.08] bg-foreground/[0.04] p-1 sm:flex">
+          {links.map((link) => {
+            const Icon = link.icon;
+            const active =
+              link.href === "/"
+                ? pathname === "/"
+                : pathname.startsWith(link.href);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  "flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium transition-all duration-150",
+                  active
+                    ? "bg-background/80 text-tt-main shadow-sm ring-1 ring-foreground/[0.08]"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                <Icon className="h-3.5 w-3.5" />
+                {link.label}
+              </Link>
+            );
+          })}
         </div>
 
-        <div className="flex items-center gap-1">
+        {/* Right actions */}
+        <div className="flex shrink-0 items-center gap-1">
           <CommandMenu />
           <ThemeSwitcher />
           <UserMenu />
