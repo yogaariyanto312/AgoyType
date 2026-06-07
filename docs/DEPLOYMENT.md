@@ -1,6 +1,6 @@
 # Deployment
 
-TypeFlow is a standard Next.js 15 app with a PostgreSQL database. Two common
+AgoyType is a standard Next.js 15 app with a PostgreSQL database. Two common
 setups are documented below.
 
 ## Environment variables
@@ -9,7 +9,7 @@ setups are documented below.
 | --- | --- | --- |
 | `DATABASE_URL` | yes | PostgreSQL connection string |
 | `NEXTAUTH_SECRET` | yes | `openssl rand -base64 32` |
-| `NEXTAUTH_URL` | yes (prod) | Full public URL, e.g. `https://typeflow.app` |
+| `NEXTAUTH_URL` | yes (prod) | Full public URL, e.g. `https://agoytype.app` |
 | `NEXT_PUBLIC_APP_URL` | yes | Same as above, exposed to the client |
 | `GOOGLE_CLIENT_ID` | no | enables the Google sign-in button |
 | `GOOGLE_CLIENT_SECRET` | no | |

@@ -57,7 +57,7 @@ export function SettingsForm({ initialBio, initialKeyboard }: Props) {
       <Card>
         <CardHeader>
           <CardTitle>Profile</CardTitle>
-          <CardDescription>How you appear to others on TypeFlow.</CardDescription>
+          <CardDescription>How you appear to others on AgoyType.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">

@@ -90,7 +90,7 @@ function TypingWordsBase({
 
       <div
         ref={innerRef}
-        className="flex flex-wrap gap-x-[0.6em] gap-y-1 transition-transform duration-150"
+        className="flex flex-wrap gap-x-[0.6em] gap-y-2 transition-transform duration-150"
         style={{ transform: `translateY(${-scrollY}px)` }}
       >
         {visible.map((word, vi) => {
@@ -167,16 +167,20 @@ function TypingWordsBase({
                       smoothCaret && typedChar !== undefined && "tt-letter-pop",
                     )}
                   >
-                    {topChar}
-                    {isWrong && (
-                      <span
-                        aria-hidden="true"
-                        className="pointer-events-none absolute inset-x-0 top-[1.5em] text-center leading-none"
-                      >
-                        <span className="text-[0.6em] text-tt-error/70">
+                    {isWrong ? (
+                      // glyph-sized box anchors the "typed key" ghost directly
+                      // beneath the correct letter (not relative to the tall line)
+                      <span className="relative inline-block leading-none">
+                        {topChar}
+                        <span
+                          aria-hidden="true"
+                          className="pointer-events-none absolute left-1/2 top-[92%] -translate-x-1/2 text-[0.5em] leading-none text-tt-error/70"
+                        >
                           {typedChar}
                         </span>
                       </span>
+                    ) : (
+                      topChar
                     )}
                   </span>
                 );

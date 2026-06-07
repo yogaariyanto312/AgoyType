@@ -1,8 +1,8 @@
 {
-  "name": "typeflow",
+  "name": "agoytype",
   "version": "1.0.0",
   "private": true,
-  "description": "TypeFlow — a modern typing test (Monkeytype / 10FastFingers clone) built with Next.js 15.",
+  "description": "AgoyType — a modern typing test (Monkeytype / 10FastFingers clone) built with Next.js 15.",
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",

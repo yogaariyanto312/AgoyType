@@ -111,6 +111,6 @@
 
 /* prevent layout shift when the typing area scrolls */
 .tt-words {
-  max-height: 9rem;
+  max-height: 10.5rem;
   overflow: hidden;
 }

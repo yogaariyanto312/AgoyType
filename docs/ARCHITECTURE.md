@@ -1,4 +1,4 @@
-# TypeFlow — Architecture & System Design
+# AgoyType — Architecture & System Design
 
 > A modern, production-oriented typing-test platform inspired by Monkeytype and
 > 10FastFingers. Built with Next.js 15 (App Router), TypeScript, Tailwind,
@@ -127,7 +127,7 @@ The full, authoritative schema lives in [`prisma/schema.prisma`](../prisma/schem
 ## 4. Folder Structure
 
 ```
-typeflow/
+agoytype/
 ├── prisma/
 │   ├── schema.prisma          # ERD source of truth
 │   └── seed.ts                # word lists, quotes, demo users, results

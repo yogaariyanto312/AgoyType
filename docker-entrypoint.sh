@@ -16,5 +16,5 @@ else
   }
 fi
 
-echo "→ Starting TypeFlow…"
+echo "→ Starting AgoyType…"
 exec "$@"

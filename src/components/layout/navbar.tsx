@@ -26,7 +26,7 @@ export function Navbar() {
               <Keyboard className="h-5 w-5" />
             </span>
             <span className="text-lg font-bold tracking-tight">
-              Type<span className="text-tt-main">Flow</span>
+              Agoy<span className="text-tt-main">Type</span>
             </span>
           </Link>
           <div className="hidden items-center gap-1 sm:flex">

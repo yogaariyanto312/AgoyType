@@ -22,14 +22,14 @@ const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 export const metadata: Metadata = {
   metadataBase: new URL(appUrl),
   title: {
-    default: "TypeFlow — Modern Typing Test",
-    template: "%s · TypeFlow",
+    default: "AgoyType — Modern Typing Test",
+    template: "%s · AgoyType",
   },
   description:
     "A modern, customizable typing test with real-time statistics, themes, leaderboards and detailed analytics. Test and improve your typing speed.",
   keywords: ["typing test", "wpm", "typing speed", "monkeytype", "10fastfingers"],
   openGraph: {
-    title: "TypeFlow — Modern Typing Test",
+    title: "AgoyType — Modern Typing Test",
     description: "Test and improve your typing speed with real-time stats and analytics.",
     type: "website",
     url: appUrl,
@@ -57,7 +57,7 @@ export default function RootLayout({
             <main className="container flex flex-1 flex-col py-6">{children}</main>
             <footer className="container py-6 text-center text-xs text-muted-foreground">
               <p>
-                TypeFlow — built with Next.js, Prisma & Tailwind.{" "}
+                AgoyType — built with Next.js, Prisma & Tailwind.{" "}
                 <span className="opacity-70">Press Ctrl+K for commands.</span>
               </p>
             </footer>

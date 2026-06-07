@@ -230,16 +230,16 @@ async function seedUser(opts: {
 }
 
 async function main() {
-  console.log("Seeding TypeFlow database…");
+  console.log("Seeding AgoyType database…");
   await seedAchievements();
   await seedContent();
 
-  await seedUser({ username: "admin", email: "admin@typeflow.dev", password: "admin12345", role: "ADMIN", skill: 110, tests: 120 });
-  await seedUser({ username: "speedy", email: "speedy@typeflow.dev", password: "password123", skill: 135, tests: 80 });
-  await seedUser({ username: "ada", email: "ada@typeflow.dev", password: "password123", skill: 95, tests: 60 });
-  await seedUser({ username: "lin", email: "lin@typeflow.dev", password: "password123", skill: 75, tests: 40 });
+  await seedUser({ username: "admin", email: "admin@agoytype.dev", password: "admin12345", role: "ADMIN", skill: 110, tests: 120 });
+  await seedUser({ username: "speedy", email: "speedy@agoytype.dev", password: "password123", skill: 135, tests: 80 });
+  await seedUser({ username: "ada", email: "ada@agoytype.dev", password: "password123", skill: 95, tests: 60 });
+  await seedUser({ username: "lin", email: "lin@agoytype.dev", password: "password123", skill: 75, tests: 40 });
 
-  console.log("\nDone. Demo login: admin@typeflow.dev / admin12345");
+  console.log("\nDone. Demo login: admin@agoytype.dev / admin12345");
 }
 
 main()

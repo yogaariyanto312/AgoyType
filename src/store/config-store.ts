@@ -60,7 +60,7 @@ export const useConfigStore = create<ConfigState>()(
       setParticlesBg: (particlesBg) => set({ particlesBg }),
     }),
     {
-      name: "typeflow-config",
+      name: "agoytype-config",
       version: 1,
     },
   ),

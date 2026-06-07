@@ -78,7 +78,7 @@ npm run dev
 # http://localhost:3000
 ```
 
-**Demo login:** `admin@typeflow.dev` / `admin12345`
+**Demo login:** `admin@agoytype.dev` / `admin12345`
 
 ---
 

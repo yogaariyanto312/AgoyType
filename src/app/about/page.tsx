@@ -51,7 +51,7 @@ export default function AboutPage() {
     <div className="mx-auto w-full max-w-4xl space-y-10 py-6">
       <section className="text-center">
         <h1 className="text-4xl font-bold tracking-tight">
-          Type<span className="text-tt-main">Flow</span>
+          Agoy<span className="text-tt-main">Type</span>
         </h1>
         <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
           A modern, open typing test inspired by Monkeytype and 10FastFingers —

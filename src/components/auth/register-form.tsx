@@ -55,7 +55,7 @@ export function RegisterForm({ googleEnabled }: { googleEnabled: boolean }) {
     <Card className="w-full max-w-md">
       <CardHeader>
         <CardTitle className="text-2xl">Create your account</CardTitle>
-        <CardDescription>Join TypeFlow and track your typing progress.</CardDescription>
+        <CardDescription>Join AgoyType and track your typing progress.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {googleEnabled && (
