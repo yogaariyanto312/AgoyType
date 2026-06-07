@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Default = "Carbon" dark theme. The theme store overrides these at runtime. */
+    --background: 0 0% 7%;
+    --foreground: 0 0% 90%;
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 90%;
+    --popover: 0 0% 9%;
+    --popover-foreground: 0 0% 90%;
+    --primary: 32 95% 55%;
+    --primary-foreground: 0 0% 7%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 90%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 55%;
+    --accent: 0 0% 16%;
+    --accent-foreground: 0 0% 90%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: 32 95% 55%;
+
+    --tt-main: 32 95% 55%;
+    --tt-sub: 0 0% 35%;
+    --tt-text: 0 0% 92%;
+    --tt-error: 0 72% 58%;
+    --tt-error-extra: 0 50% 40%;
+    --tt-caret: 32 95% 55%;
+
+    --radius: 0.6rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* thin, themed scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted));
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+  }
+
+  /* respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* The smooth, animated caret used by the typing engine. */
+  .tt-caret {
+    @apply absolute rounded-full bg-tt-caret;
+    width: 3px;
+    margin-left: -1px;
+    box-shadow: 0 0 0.5rem hsl(var(--tt-caret) / 0.55);
+    /* easeOutQuint glide — slightly slower vertically so line jumps read smooth */
+    transition:
+      left 0.11s cubic-bezier(0.22, 1, 0.36, 1),
+      top 0.13s cubic-bezier(0.22, 1, 0.36, 1),
+      height 0.1s ease,
+      opacity 0.1s ease;
+    will-change: left, top, height;
+  }
+  .tt-caret--blink {
+    @apply animate-caret-blink;
+  }
+
+  /* Subtle pop applied to each character as it is typed. */
+  .tt-letter-pop {
+    animation: tt-pop 0.12s ease-out;
+  }
+}
+
+@keyframes tt-pop {
+  from {
+    transform: scale(0.72);
+    opacity: 0.55;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* prevent layout shift when the typing area scrolls */
+.tt-words {
+  max-height: 9rem;
+  overflow: hidden;
+}
