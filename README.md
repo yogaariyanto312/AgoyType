@@ -1,4 +1,4 @@
-# TypeFlow ⌨️
+# AgoyType ⌨️
 
 A modern, production-oriented typing test inspired by **Monkeytype** and
 **10FastFingers** — real-time typing engine, deep statistics, themes,

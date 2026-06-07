@@ -97,35 +97,60 @@ function TypingWordsBase({
           const gi = windowStart + vi; // global word index
           const typed = inputs[gi] ?? "";
           const isActive = gi === wordIndex;
+          const isPast = !isActive && gi < wordIndex;
           const target = isZen ? typed : word;
-          const len = Math.max(target.length, typed.length);
+          // Cap how many overflow characters render so a burst of wrong
+          // keypresses on one word can't blow out the layout.
+          const maxLen = isZen ? typed.length : word.length + 12;
+          const len = Math.min(Math.max(target.length, typed.length), maxLen);
           const caretLetter = typed.length;
 
-          const hadError =
-            !isActive &&
-            gi < wordIndex &&
+          // A word is "wrong" when any typed character is a mistake
+          // (substitution or overflow), or a finished word was left unfinished.
+          // Applied live on the active word and kept on completed words.
+          const wrongWord =
             !isZen &&
-            (typed.length !== word.length ||
-              [...typed].some((ch, i) => ch !== word[i]));
+            (isActive || isPast) &&
+            ([...typed].some((ch, i) => ch !== word[i]) ||
+              (isPast && typed.length < word.length));
 
           return (
             <div
               key={gi}
               ref={isActive ? activeWordRef : undefined}
               className={cn(
-                "flex items-center border-b-2 border-transparent",
-                hadError && "border-tt-error/50",
+                "flex items-center border-b-2 border-transparent transition-colors duration-150",
+                wrongWord && "border-tt-error/70",
               )}
             >
               {Array.from({ length: len }).map((_, i) => {
                 const targetChar = target[i];
                 const typedChar = typed[i];
+                const isExtra = !isZen && i >= word.length;
+                const isWrong =
+                  !isZen &&
+                  !isExtra &&
+                  typedChar !== undefined &&
+                  typedChar !== targetChar;
+
+                // Top row = the EXPECTED letter (so you always see the correct
+                // one). The actual key pressed is shown beneath when it's wrong.
+                let topChar = targetChar ?? "";
                 let cls = "text-tt-sub";
                 if (typedChar !== undefined) {
-                  if (isZen) cls = "text-tt-text";
-                  else if (i >= word.length) cls = "text-tt-error-extra";
-                  else if (typedChar === targetChar) cls = "text-tt-text";
-                  else cls = "text-tt-error";
+                  if (isZen) {
+                    topChar = typedChar;
+                    cls = "text-tt-text";
+                  } else if (isExtra) {
+                    topChar = typedChar;
+                    cls = "text-tt-error-extra";
+                  } else if (isWrong) {
+                    topChar = targetChar ?? "";
+                    cls = "text-tt-error";
+                  } else {
+                    topChar = targetChar ?? "";
+                    cls = "text-tt-text";
+                  }
                 }
 
                 const isCaretHere = isActive && i === caretLetter;
@@ -134,6 +159,7 @@ function TypingWordsBase({
                     key={i}
                     ref={isCaretHere ? activeLetterRef : undefined}
                     className={cn(
+                      "relative",
                       cls,
                       "transition-colors duration-100",
                       // gentle pop as each character is typed (respects the
@@ -141,7 +167,17 @@ function TypingWordsBase({
                       smoothCaret && typedChar !== undefined && "tt-letter-pop",
                     )}
                   >
-                    {typedChar ?? targetChar ?? ""}
+                    {topChar}
+                    {isWrong && (
+                      <span
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-x-0 top-[1.5em] text-center leading-none"
+                      >
+                        <span className="text-[0.6em] text-tt-error/70">
+                          {typedChar}
+                        </span>
+                      </span>
+                    )}
                   </span>
                 );
               })}
